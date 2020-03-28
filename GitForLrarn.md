@@ -87,6 +87,8 @@
 # 解决上传文件时一直提示输入账号和密码但一直都不能正常上传(提示密码错误)
   详情查阅https://blog.csdn.net/u013977285/article/details/79726354
   重新添加一个token即可
+# 解决上传文件时每次都需要输入账号和密码
+  详情查阅https://www.cnblogs.com/sky6862/p/7992736.html
 
   
 
