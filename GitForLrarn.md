@@ -40,5 +40,15 @@
   当把文件往Git版本库中添加时，是分两步执行的：
   第一步 用 git add filename 把文件添加进去，实际上就是把文件修改添加到暂存区；
   第二步 用 git commit 提交更改，实际上就是把从暂存区的所有内容提交到当前分支。
+# Git命令初步记录
+  Git管理的文件分为: 工作区(当前文件夹)，版本库(当前文件夹下的.git文件夹),版本库又分为暂存区和暂存区分支master(仓库)
+  工作区>>>>暂存区>>>>>仓库
+  git add filename 把filename文件从工作区>>>>暂存区，git commit把文件从暂存区>>>仓库,
+  git diff 查看工作区和暂存区差异,
+  git diff --cached 查看暂存区和仓库的差异,
+  git diff HEAD 查看工作区和仓库的差异,
+  git add 的反向命令git checkout, 撤销工作区修改，即把暂存最新行版本转移到工作区
+  git commit的反向命令git reset HEAD,就是把仓库罪行版本转移到暂存区。
+
 
 
