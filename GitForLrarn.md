@@ -89,6 +89,44 @@
   重新添加一个token即可
 # 解决上传文件时每次都需要输入账号和密码
   详情查阅https://www.cnblogs.com/sky6862/p/7992736.html
+# 解决上传出错问题(没有再该输入yes的地方输入yes)
+  问题详情
+  The authenticity of host 'github.com (13.250.177.223)' can't be established.
+  RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+  Are you sure you want to continue connecting (yes/no/[fingerprint])?
+  Host key verification failed.
+  fatal: Could not read from remote repository.
+  Please make sure you have the correct access rights
+  and the repository exists.
+  解决措施
+    为什么GitHub需要SSH Key呢？
+  因为GitHub需要识别出你推送的提交确实是你提交的，而不是别人冒充的，而Git支持SSH协议，所以，
+GitHub只要知道了公钥，就可以确定只有自己才能进行推送。
+# 解决上传文件时一直提示输入账号和密码但一直都不能正常上传(提示密码错误)
+  详情查阅https://blog.csdn.net/u013977285/article/details/79726354
+  重新添加一个token即可
+# 解决上传文件时每次都需要输入账号和密码
+  详情查阅https://www.cnblogs.com/sky6862/p/7992736.html
+# 解决上传出错问题(没有再该输入yes的地方输入yes)
+  问题详情
+  The authenticity of host 'github.com (13.250.177.223)' can't be established.
+  RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+  Are you sure you want to continue connecting (yes/no/[fingerprint])?
+  Host key verification failed.
+  fatal: Could not read from remote repository.
+  Please make sure you have the correct access rights
+  and the repository exists.
+  解决措施
+  Are you sure you want to continue connecting (yes/no)?   #这里输入yes回车
+
+
+
+
+
+GitForLrarn.md[+] [unix] (01:47 29/03/2020)                                       102,3 底端
+-- 插入 --
+
+	
 
   
 
