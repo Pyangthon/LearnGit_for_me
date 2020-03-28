@@ -84,6 +84,9 @@
   详情查阅:https://www.liaoxuefeng.com/wiki/896043488029600/896954117292416
   为什么GitHub需要SSH Key呢？
   因为GitHub需要识别出你推送的提交确实是你提交的，而不是别人冒充的，而Git支持SSH协议，所以，GitHub只要知道了公钥，就可以确定只有自己才能进行推送。
-  
+# 解决上传文件时一直提示输入账号和密码但一直都不能正常上传(提示密码错误)
+  详情查阅https://blog.csdn.net/u013977285/article/details/79726354
+  重新添加一个token即可
+
   
 
