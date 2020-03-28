@@ -1,6 +1,6 @@
 学习Git笔记
 # 安装Git
-    Windows安装比较简单，直接下载软件安装即可。
+  Windows安装比较简单，直接下载软件安装即可。
 # 初始化Git
   ## 自报家门
   git config --global user.name "My name
