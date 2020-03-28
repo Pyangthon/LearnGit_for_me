@@ -119,14 +119,3 @@ GitHub只要知道了公钥，就可以确定只有自己才能进行推送。
   解决措施
   Are you sure you want to continue connecting (yes/no)?   #这里输入yes回车
 
-
-
-
-
-GitForLrarn.md[+] [unix] (01:47 29/03/2020)                                       102,3 底端
--- 插入 --
-
-	
-
-  
-
