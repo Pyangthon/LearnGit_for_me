@@ -49,6 +49,7 @@
   git diff HEAD 查看工作区和仓库的差异,
   git add 的反向命令git checkout, 撤销工作区修改，即把暂存最新行版本转移到工作区
   git commit的反向命令git reset HEAD,就是把仓库罪行版本转移到暂存区。
-
+# Git命令避坑
+  在提交之前一定要将当前工作区的最新内容进行一次添加 (git add <filename>)，然后再进行提交，保证版本库中的内容与工作区中的内容是一致的。
 
 
