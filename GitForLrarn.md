@@ -56,5 +56,24 @@
   若果修改了文件有将其添加到暂存区中(git add <filename>),但还没有进行提交(git commit)，仍有办法撤销文件。
   第一步，使用命令git reset HEAD <filename> 把暂存区的修改撤销掉(unstage)，重新将其放到工作区中。此时暂存区就没有最新版本的文件了，可使用git status查看版本库中的文件。
   第二步，使用丢弃工作区的修改命令 git checkout -- <filename>，即可实现将已经添加到暂存区的文件撤销到最后一次提交时的状态。
+# 删除文件
+  在Git中，删除是一个修改操作。现在新建一个文件test.txt,然后进行添加和提交
+  git add test.txt
+  git commit -m "add test.txt"
+  现在进行了添加和修改，那么如何把这个文件工作区和版本库中删除呢?
+  首先，在工作区中删除该文件
+  rm test.txt
+  此时仅仅只是在工作区中删除了该文件，如果使用git status 可以查看当前暂存区的状态，可了解到git已经记录删除文件的操作。那么怎么在暂存区也删除呢？
+  手动删除文件，然后使用git rm <filename> 和git add <filename> 效果是一样的。
+  情况1，确实需要从版本库中删除该文件。
+  第一步，使用git rm命令删除文件
+  git rm test.txt
+  第二步，使用git commit进行提交，这个文件就彻底的被删除了。
+  git commot -m "remove test.txt"
+  情况2，文件被误删,但仅仅只是删除了工作区的文件，实际上版本库中还是有的，所以直接撤销操作就行。使用 git checkout -- test.txt 即可恢复文件
+  git checkout 命令其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以"一键还原"。
+  注意: 从来没有天骄到版本库的就被删除的文件，是无法恢复的。
+
+  
   
 
