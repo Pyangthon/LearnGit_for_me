@@ -160,3 +160,22 @@ GitHub只要知道了公钥，就可以确定只有自己才能进行推送。
 # clone远端仓库小结
   要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令进行克隆
   Git支持多种协议，包括https，但ssh协议速度最快，https除了速度慢以外，每次推送都必须要输入口令。但是在某些只开放http端口的公司内部就无法使用ssh协议，而只能用https。
+# 分支管理
+  ## 分支创建
+    第一步，创建一个分支  git checkout -b dev  dev 即是被创建的新的分支
+    git checkout -b  <name>  表示创建并切换，相当于下面两条命令
+    git branch dev     创建dev分支
+    git checkout dev   切换到dev分支
+    第二步 使用git branch 命令查看当前分支(该步非必要)
+    git branch 命令会列出所有分支，当前分支前面会标有一个 * 号
+    第三步，进行添加和提交
+    git checkout <name> 该命令用于切换分支
+  ## 分支合并
+    现在需要把master 和 dev分支的内容进行合并
+    第一步, 把dev分支的工作成果合并到master分支上
+    git merge dev
+    git merge <name> 命令用于合并指定分支到当前分支。
+  ## 分支删除
+    当确保需要删除的分支中的内容已不再需要或已经合并完成后，即可进行删除
+    git branch -d <name> 删除分支
+
