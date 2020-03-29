@@ -141,3 +141,8 @@ GitHub只要知道了公钥，就可以确定只有自己才能进行推送。
   Warning: Permanently added the RSA host key for IP address '52.74.223.119' to the list of known hosts.
   详情查阅 https://www.jianshu.com/p/a234f6e40a40
   问题在于需要把本地ip地址添加到hosts中
+# 从远程库克隆
+  第一步，创建一个新的仓库，名字为gitskills
+  第二步，在远端仓库添加README.md文件
+  第三步，克隆远端仓库 使用git clone <gitaddress>
+  完成克隆
