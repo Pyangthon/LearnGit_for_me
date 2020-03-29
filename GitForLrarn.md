@@ -338,3 +338,56 @@
 
     开发一个新需求，最好新建一个分支；
     如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除
+
+## 29. 多人协作
+
+    当从远程仓库克隆时，实际上Git自动把本地的master分支和远程的master分支对应起来，并且，远程仓库的默认名称是origin。
+
+    要查看远程库的信息，用git remote
+    查看详细信息使用 git remote -v
+    使用该命令可以显示可以抓取和推送的origin的地址。如果没有推送权限，就看不到push的地址
+
+### 29.1 推送分支
+
+    推送分支，就是把分支上的本地提交推送到远端库，推送时，要指定本地分支，这样，Git就会把该分支推送到远端库对应的远端分支上：
+    git push origin master
+    如果要推送其他分支，比如dev，就改成:
+    git push origin dev
+    但是，并不是一定要把本地分支王远程推送，那么，哪些分支需要推送，哪些不需要呢？
+    * master分支是主分支，因此要时刻与远程同步；
+    * dev分支是开发分支，团队的所有成员都在上面工作，所以也需要与远程同步；
+    * bug分支知识用于本地修复bug，就没有不要推到远程了，除非需要记录bug的修复过程。
+    * feature分支是否推到远程取决于是否有其他人需要在该分支上开发。
+
+### 29.2 抓取分支
+
+    多人协作时，大家都会往master和dev分支上推送各自的修改。
+    当有一位小伙伴和自己在同一个远端仓库中进行修改添加。
+    当小伙伴在origin/dev分支推送了它的提交，但碰巧自己也对同样的文件做了修改并试图进行推送。
+    这时候就是可能会出错。
+    推送失败，因为小伙伴和我自己的修改推送有冲突。
+    这时候先用git pull 把罪行的提交从origin/dev抓取下来，然后在本地合并，解决冲突，再推送。
+    git pull
+    但是仍然会失败。
+    因为没有指定本地dev分支远程origin/dev分支的链接，这时将本地dev分支和远端dev分支进行一次连接
+    git branch --set-upsteram-to=origin/dev dev
+    再进行pull
+    git pull    这时应该会成功
+    但是合并时会有冲突，需要手动解决。解决后，进行提交，再次push
+
+    因此，多人协作的工作模式通常是这样的:
+    * 首先，可以试图用git push origin <branch-name>推送自己的修改；
+    * 如果推送失败，则因为远程分支比本地的更新，需要先用git pull 试图合并；
+    * 如果合并有冲突，则解决冲突，并在本地提交；
+    * 没有冲突或者解决冲突后，在用 git push origin <branch-name>推送就能成功！
+    
+    如果git pull提示no tracking information，则说明本地分支和远程分支的连接没有创建，用命令 git branch --set-upstream-to <branch-name> origin/<branch-name>。
+
+### 29.3 多人协作小结
+
+    * 查看远程库信息，使用git remote -v；
+    * 本地新建的分支如果不推送到远端，对其他人就是不可见的；
+    * 从本地推送分支，使用git push origin branch-name， 如果推送失败，先用git pull抓取远程的新提交；
+    * 在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name, 本地和远程分支的名称最好一致；
+    * 建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name；
+    * 从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
