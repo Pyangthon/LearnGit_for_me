@@ -32,9 +32,9 @@
 # git的工作区和暂存区
   Git和其他版本控制如SVN的一个不同之处就是有暂存区的概念
   ## 名词解析
-  工作区(Working Firectory)
+  ### 工作区(Working Firectory)
   工作区就是被git初始化过的文件夹，当前就是E:\Study_file_dir\GitofLearn这个文件夹
-  版本库(Repository)
+  ### 版本库(Repository)
   工作区有一个隐藏目录.git，它不算工作区，而是Git的版本库
   Git的版本库里村里很多东西，其中最重要的就是被称为stage(或者叫index)的暂存区,以及Git自动创建的第一个分支master，一直指向master的一个指针HEAD
   当把文件往Git版本库中添加时，是分两步执行的：
@@ -118,4 +118,22 @@ GitHub只要知道了公钥，就可以确定只有自己才能进行推送。
   and the repository exists.
   解决措施
   Are you sure you want to continue connecting (yes/no)?   #这里输入yes回车
-
+# 添加远程库
+  详情查阅https://www.liaoxuefeng.com/wiki/896043488029600/898732864121440
+  此处遇到的坑在上面已经做出相应解析
+  这里先与本地仓库进行关联，注意使用git模式，而不是https模式，该模式每次上传都需要输入密码。
+  使用 git remote add origin <gitadders>
+  即可将远端仓库关联到本地git仓库
+  使用 git push -u origin master 
+  即可将本地所有数据推送到远端库
+  把本地库的内容推送到原调，使用git push命令，实际上是把当前分支master推送到远程。
+  由于远端库是空的，我们第一次推送master分支时，加上了 -u 参数，Git不但会把本地的master分支内容推送到远程新的master分支和远程的master分支关联起来，在以后的推送或者拉取时就可以简化命令。
+  在上面的操作完成后，只要本地做了提交commit，就可以通过命令
+  git push origin master
+  把本地master分支的最新修改推送至GitHub。至此，一个真正的分布式版本库就有了。
+# SSH警告
+  该问题就是 上面的解决上传出错问题，详情查阅该段即可。
+# 添加远程库小结
+  要关联一个远程库,使用命令git remote add origin git@server-name:path/repo-nam.git。
+  关联后，使用命令 git push -u origin master第一次推送master分支的所有内容。
+  此后，每次本地提交后，只要有必要，就可以使用命令git push origin master 推送最新修改
