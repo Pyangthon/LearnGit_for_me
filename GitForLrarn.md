@@ -107,7 +107,7 @@ GitHub只要知道了公钥，就可以确定只有自己才能进行推送。
   重新添加一个token即可
 # 解决上传文件时每次都需要输入账号和密码
   详情查阅https://www.cnblogs.com/sky6862/p/7992736.html
-# 解决上传出错问题(没有再该输入yes的地方输入yes)
+# 解决上传出错问题(没有在该输入yes的地方输入yes)
   问题详情
   The authenticity of host 'github.com (13.250.177.223)' can't be established.
   RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
