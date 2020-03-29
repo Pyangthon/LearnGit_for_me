@@ -137,3 +137,7 @@ GitHub只要知道了公钥，就可以确定只有自己才能进行推送。
   要关联一个远程库,使用命令git remote add origin git@server-name:path/repo-nam.git。
   关联后，使用命令 git push -u origin master第一次推送master分支的所有内容。
   此后，每次本地提交后，只要有必要，就可以使用命令git push origin master 推送最新修改
+# 解决提示警告
+  Warning: Permanently added the RSA host key for IP address '52.74.223.119' to the list of known hosts.
+  详情查阅 https://www.jianshu.com/p/a234f6e40a40
+  问题在于需要把本地ip地址添加到hosts中
