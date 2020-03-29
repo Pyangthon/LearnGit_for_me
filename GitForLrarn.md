@@ -157,4 +157,6 @@ GitHub只要知道了公钥，就可以确定只有自己才能进行推送。
   Please make sure you have the correct access rights
   and the repository exists.
   解决措施查阅 https://blog.csdn.net/qq_42146613/article/details/82772734
-
+# clone远端仓库小结
+  要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令进行克隆
+  Git支持多种协议，包括https，但ssh协议速度最快，https除了速度慢以外，每次推送都必须要输入口令。但是在某些只开放http端口的公司内部就无法使用ssh协议，而只能用https。
