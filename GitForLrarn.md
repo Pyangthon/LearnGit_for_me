@@ -217,19 +217,19 @@
     第三步，进行添加和提交
     git checkout <name> 该命令用于切换分支
 
-## 分支合并
+### 分支合并
 
     现在需要把master 和 dev分支的内容进行合并
     第一步, 把dev分支的工作成果合并到master分支上
     git merge dev
     git merge <name> 命令用于合并指定分支到当前分支。
 
-## 分支删除
+### 分支删除
 
     当确保需要删除的分支中的内容已不再需要或已经合并完成后，即可进行删除
     git branch -d <name> 删除分支
 
-## switch
+### switch
 
     在切换分支时使用git checkout <branch>，这个命令与撤销修改是同一个命令，实际上这并不和是，所以雀环分支这个动作使用switch更加科学。所以后面的分支切换内容都将使用switch来进行。
     创建新的分支dev
@@ -237,7 +237,7 @@
     切换到主分支
     git switch master
 
-## 分支管理小结
+### 分支管理小结
 
     查看分支: git branch
     创建分支: git branch <name>
@@ -245,4 +245,12 @@
     创建+雀环分支: git checkout -b <name> 或者 git switch -c <name>
     合并某分支到当前分支; git merge <name>
     删除分支: git branch -d <name>
+
+## 解决冲突
+
+    当在两个分支中修改了同一个文件的相同内容，并且都做了添加和提交。
+    这时便会出现冲突，需要手动进行选择需要保留的内容。
+    选择好之后在进行添加和提交，即可解决文件修改的冲突。
+    可使用git log --graph --pretty=oneline --abbrev-commit 这个条命令
+    查看分支的合并情况。
 
