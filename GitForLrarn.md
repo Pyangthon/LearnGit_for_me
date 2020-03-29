@@ -1,20 +1,20 @@
 # 学习Git笔记
 
-## 安装Git
+## 1. 安装Git
 
     Windows安装比较简单，直接下载软件安装即可。
 
-## 初始化Git
+## 2. 初始化Git
 
     ### 自报家门
     git config --global user.name "My name
     git config --global user.email "email@example.com"
 
-## 创建版本库
+## 3. 创建版本库
 
     git init  该步操作直接会将当前文件当做git版本库的根目录
 
-## 添加文件
+### 3.1添加文件
 
     第一步：编写一个文件
     readme.md
@@ -23,42 +23,42 @@
     第三步：提交文件到仓库
     git commit -m "提交说明记录"
 
-## 查看当前仓库状态
+## 4. 查看当前仓库状态
 
     git status 该命令让我们时刻掌握仓库当前的状态。
 
-## 查看文件被修改的内容
+## 5. 查看文件被修改的内容
 
     git diff fileName 该命令用于查看本次修改遇上次提交后具体修改的内容。
 
-## 提交修改文件
+## 6. 提交修改文件
   
     提交修改与第一次添加内容一样。
     第一步：修改一个文件。
     第二步：将文件添加到仓库中。
     第三步：将文件提交到仓库中。
 
-## 查看提交记录命令
+## 7. 查看提交记录命令
 
     git reflog  记录每一条命令(主要是版本号)。
 
-## HEAD总结
+## 8. HEAD总结
 
     HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令git reset --head commit_id即可。
     穿梭前，用git log可查看提交历史，一遍确定要回退到哪个版本。
     要重返未来，用git reflog查看历史，一遍确定要回到未来的哪个版本。
 
-## git的工作区和暂存区
+## 9. git的工作区和暂存区
 
     Git和其他版本控制如SVN的一个不同之处就是有暂存区的概念
 
-## 名词解析
+## 10. 名词解析
 
-### 工作区(Working Firectory)
+### 10.1 工作区(Working Firectory)
 
     工作区就是被git初始化过的文件夹，当前就是E:\Study_file_dir\GitofLearn这个文件夹
 
-### 版本库(Repository)
+### 10.2 版本库(Repository)
   
     工作区有一个隐藏目录.git，它不算工作区，而是Git的版本库
     Git的版本库里村里很多东西，其中最重要的就是被称为stage(或者叫index)的暂存区,以及Git自动创建的第一个分支master，一直指向master的一个指针HEAD
@@ -66,7 +66,7 @@
     第一步 用 git add filename 把文件添加进去，实际上就是把文件修改添加到暂存区；
     第二步 用 git commit 提交更改，实际上就是把从暂存区的所有内容提交到当前分支。
 
-## Git命令初步记录
+## 11. Git命令初步记录
 
     Git管理的文件分为: 工作区(当前文件夹)，版本库(当前文件夹下的.git文件夹),版本库又分为暂存区和暂存区分支master(仓库)
     工作区>>>>暂存区>>>>>仓库
@@ -77,18 +77,18 @@
     git add 的反向命令git checkout, 撤销工作区修改，即把暂存最新行版本转移到工作区
     git commit的反向命令git reset HEAD,就是把仓库罪行版本转移到暂存区。
 
-## Git添加和提交命令避坑
+## 12. Git添加和提交命令避坑
 
     在提交之前一定要将当前工作区的最新内容进行一次添加 (git add <filename>)，然后再进行提交，保证版本库中的内容与工作区中的内容是一致的。
 
-## 撤销修改
+## 13. 撤销修改
 
     如果仅仅是修改了文件，没有做添加到暂存区的操作，使用 git checkout -- <filename> 即可将本次文件修改撤销。类似于ctrl+z的操作。
     如果修改了文件有将其添加到暂存区中(git add <filename>),但还没有进行提交(git commit)，仍有办法撤销文件。
     第一步，使用命令git reset HEAD <filename> 把暂存区的修改撤销掉(unstage)，重新将其放到工作区中。此时暂存区就没有最新版本的文件了，可使用git status查看版本库中的文件。
     第二步，使用丢弃工作区的修改命令 git checkout -- <filename>，即可实现将已经添加到暂存区的文件撤销到最后一次提交时的状态。
 
-## 删除文件
+## 14. 删除文件
 
     在Git中，删除是一个修改操作。现在新建一个文件test.txt,然后进行添加和提交
     git add test.txt
@@ -107,11 +107,11 @@
       git checkout 命令其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以"一键还原"。
     注意: 从来没有天骄到版本库的就被删除的文件，是无法恢复的。
 
-## 删除文件小结
+## 15. 删除文件小结
 
     命令git rm 用于删除一个文件。如果一个文件被提交到版本库，那么永远不用担心被误删，但是要注意，只能恢复文件的最新版本，会丢失对吼一次提交后文件被修改的内容。
 
-## Git远程仓库
+## 16. Git远程仓库
 
     如何使用远程仓库(GitHub)
     第一步,创建SSH Key。在用户目录下，看看有没有.ssh目录，如果有再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件。如果没有，打开Shell(Git Bash)，创建SSH Key:
@@ -122,16 +122,16 @@
     为什么GitHub需要SSH Key呢？
     因为GitHub需要识别出你推送的提交确实是你提交的，而不是别人冒充的，而Git支持SSH协议，所以，GitHub只要知道了公钥，就可以确定只有自己才能进行推送。
 
-## 解决上传文件时一直提示输入账号和密码但一直都不能正常上传(提示密码错误)
+## 17. 解决上传文件时一直提示输入账号和密码但一直都不能正常上传(提示密码错误)
 
     详情查阅https://blog.csdn.net/u013977285/article/details/79726354
     重新添加一个token即可
 
-## 解决上传文件时每次都需要输入账号和密码
+## 18. 解决上传文件时每次都需要输入账号和密码
 
     详情查阅https://www.cnblogs.com/sky6862/p/7992736.html
 
-## 解决上传出错问题(没有再该输入yes的地方输入yes)
+## 19. 解决上传出错问题(没有再该输入yes的地方输入yes)
 
     问题详情
     The authenticity of host 'github.com (13.250.177.223)' can't be established.
@@ -146,7 +146,7 @@
     因为GitHub需要识别出你推送的提交确实是你提交的，而不是别人冒充的，而Git支持SSH协议，所以，
     GitHub只要知道了公钥，就可以确定只有自己才能进行推送。
 
-## 添加远程库
+## 20. 添加远程库
   
     详情查阅https://www.liaoxuefeng.com/wiki/896043488029600/898732864121440
     此处遇到的坑在上面已经做出相应解析
@@ -161,34 +161,34 @@
     git push origin master
     把本地master分支的最新修改推送至GitHub。至此，一个真正的分布式版本库就有了。
 
-## SSH警告
+## 21. SSH警告
 
     该问题就是 上面的解决上传出错问题，详情查阅该段即可。
 
-## 添加远程库小结
+## 22. 添加远程库小结
 
     要关联一个远程库,使用命令git remote add origin git@server-name:path/repo-nam.git。
     关联后，使用命令 git push -u origin master第一次推送master分支的所有内容。
     此后，每次本地提交后，只要有必要，就可以使用命令git push origin master 推送最新修改
 
-## 解决提示警告
+## 23. 解决提示警告
 
     Warning: Permanently added the RSA host key for IP address '52.74.223.119' to the list of known hosts.
     详情查阅 https://www.jianshu.com/p/a234f6e40a40
     问题在于需要把本地ip地址添加到hosts中
 
-## 从远程库克隆
+## 24. 从远程库克隆
 
     第一步，创建一个新的仓库，名字为gitskills
     第二步，在远端仓库添加README.md文件
     第三步，克隆远端仓库 使用git clone <gitaddress>
     完成克隆
 
-## 如何删除远端仓库
+## 25. 如何删除远端仓库
 
     详情查阅https://blog.csdn.net/weixin_39068791/article/details/80556278
 
-## 解决上传失败问题(SSH不能连接成功)
+## 26. 解决上传失败问题(SSH不能连接成功)
 
     使用 git push origin master 出错
     报错为
@@ -199,14 +199,14 @@
     and the repository exists.
     解决措施查阅 https://blog.csdn.net/qq_42146613/article/details/82772734
 
-## clone远端仓库小结
+## 27. clone远端仓库小结
 
     要克隆一个仓库，首先必须知道仓库的地址，然后使用git clone命令进行克隆
     Git支持多种协议，包括https，但ssh协议速度最快，https除了速度慢以外，每次推送都必须要输入口令。但是在某些只开放http端口的公司内部就无法使用ssh协议，而只能用https。
 
-## 分支管理
+## 28. 分支管理
 
-### 分支创建
+### 28.1 分支创建
 
     第一步，创建一个分支  git checkout -b dev  dev 即是被创建的新的分支
     git checkout -b  <name>  表示创建并切换，相当于下面两条命令
@@ -217,19 +217,19 @@
     第三步，进行添加和提交
     git checkout <name> 该命令用于切换分支
 
-### 分支合并
+### 28.2 分支合并
 
     现在需要把master 和 dev分支的内容进行合并
     第一步, 把dev分支的工作成果合并到master分支上
     git merge dev
     git merge <name> 命令用于合并指定分支到当前分支。
 
-### 分支删除
+### 28.3 分支删除
 
     当确保需要删除的分支中的内容已不再需要或已经合并完成后，即可进行删除
     git branch -d <name> 删除分支
 
-### switch
+### 28.4 switch
 
     在切换分支时使用git checkout <branch>，这个命令与撤销修改是同一个命令，实际上这并不和是，所以雀环分支这个动作使用switch更加科学。所以后面的分支切换内容都将使用switch来进行。
     创建新的分支dev
@@ -237,7 +237,7 @@
     切换到主分支
     git switch master
 
-### 分支管理小结
+### 28.5 分支管理小结
 
     查看分支: git branch
     创建分支: git branch <name>
@@ -246,7 +246,7 @@
     合并某分支到当前分支; git merge <name>
     删除分支: git branch -d <name>
 
-### 解决冲突
+### 28.6 解决冲突
 
     当在两个分支中修改了同一个文件的相同内容，并且都做了添加和提交。
     这时便会出现冲突，需要手动进行选择需要保留的内容。
@@ -254,7 +254,7 @@
     可使用git log --graph --pretty=oneline --abbrev-commit 这个条命令
     查看分支的合并情况。
 
-### 分支管理策略
+### 28.7 分支管理策略
 
     通常合并分支时，如果可能Git会用Fast forward模式，但这种模式下，删除分支后会丢失分支信息。
     如果要强制禁用Fast forward模式， Git就会在merge时生产一个新的commit，这样分支历史上就可以看出分支信息。
@@ -270,18 +270,18 @@
     git merge --no--ff -m "merge wtih no-ff" dev
     本次合并要创建一个新的commit，所以加上-m的参数，把commit描述写进去。
 
-### 分支策略
+### 28.8 分支策略
 
     在实际的开发过程中，应该按照几个基本原则进行分支管理：
     首先,master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能再上面干活；
     编写新功能代码都在dev分支上，当某一个功能稳定完全后，即可将dev分支和并到master上，然后master中发布新版本
 
-### 分支策略小结
+### 28.9 分支策略小结
 
     Git分支相当强大。
     合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并
 
-### Bug分支
+### 28.10 Bug分支
 
     在软件开发中，bug就像家常便饭一样。有了bug就需要修复，在git中，由于分支是如此的强大，所以，
     每个bug都可以通过一个新的临时分支来修复，修复后，合并分支，然后将临时分支删除。
@@ -309,13 +309,13 @@
     因为dev分支和master分支基本上是一样的，存在bug位置都差不多，所以只需要重新进行一次提交在master中修复bug的commit就可以，当然这里只是将提交复制到dev中而不是把整个master分支merge(合并)到dev中。
     这里Git专门提供了一个 cherry-pick命令，该命令可以赋值一个特定的提交到当前分支。
 
-#### Bug分支小结
+#### 28.11 Bug分支小结
 
     修复bug时，可以通过创建新的bug分支进行修复，然后合并，最后删除
     当手头的工作没有完成时，先把工作现场git stash（存储并隐藏）一下，然后去修复bug，修复后，在git stash pop，回到工作现场。
     在master分支上修复的bug，想要合并到当前dev分支，可以用 git cherry-pick <commit> 命令，把bug提交的修改"复制"到当前分支，避免重复劳动。
 
-### Feature分支
+### 28.12 Feature分支
 
     软件开发中，总有无穷无尽的新的功能要不断添加进来。
     添加一个新功能时，肯定不希望因为一些实验性质的代码，把主分支搞乱，所以，每添加一个新功能，最好新建一个feature分支，在上面开发，完成后，合并，最后，删除该feature分支。
@@ -334,7 +334,7 @@
     git branch -D feature-vulcan
     这时，这个分支就被删除了。完全没有一丝痕迹
 
-#### Feature分支小结
+### 28.13 Feature分支小结
 
     开发一个新需求，最好新建一个分支；
     如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除
