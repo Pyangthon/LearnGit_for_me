@@ -246,7 +246,7 @@
     合并某分支到当前分支; git merge <name>
     删除分支: git branch -d <name>
 
-## 解决冲突
+### 解决冲突
 
     当在两个分支中修改了同一个文件的相同内容，并且都做了添加和提交。
     这时便会出现冲突，需要手动进行选择需要保留的内容。
@@ -254,7 +254,7 @@
     可使用git log --graph --pretty=oneline --abbrev-commit 这个条命令
     查看分支的合并情况。
 
-## 分支管理策略
+### 分支管理策略
 
     通常合并分支时，如果可能Git会用Fast forward模式，但这种模式下，删除分支后会丢失分支信息。
     如果要强制禁用Fast forward模式， Git就会在merge时生产一个新的commit，这样分支历史上就可以看出分支信息。
@@ -308,3 +308,33 @@
     当然这里有一问题，因为bug是出在master分支中，所以dev这个分支极有可能也是存在该bug的，那么快速的修复dev分支中的bug呢？
     因为dev分支和master分支基本上是一样的，存在bug位置都差不多，所以只需要重新进行一次提交在master中修复bug的commit就可以，当然这里只是将提交复制到dev中而不是把整个master分支merge(合并)到dev中。
     这里Git专门提供了一个 cherry-pick命令，该命令可以赋值一个特定的提交到当前分支。
+
+#### Bug分支小结
+
+    修复bug时，可以通过创建新的bug分支进行修复，然后合并，最后删除
+    当手头的工作没有完成时，先把工作现场git stash（存储并隐藏）一下，然后去修复bug，修复后，在git stash pop，回到工作现场。
+    在master分支上修复的bug，想要合并到当前dev分支，可以用 git cherry-pick <commit> 命令，把bug提交的修改"复制"到当前分支，避免重复劳动。
+
+### Feature分支
+
+    软件开发中，总有无穷无尽的新的功能要不断添加进来。
+    添加一个新功能时，肯定不希望因为一些实验性质的代码，把主分支搞乱，所以，每添加一个新功能，最好新建一个feature分支，在上面开发，完成后，合并，最后，删除该feature分支。
+    现在准备开发新功能。
+    git switch -c feature-vulcan
+
+    添加一个新文件 vulcan.py
+    git add vulcan.py   将文件添加到暂存区
+    git commit -m "add feature vulcan" 将文件提交到仓库中
+    功能开发完成后，突然，接到上级通知，这个新项目因为某种原因不能继续进行，且不需取消，虽然项目白干了，但是这个属于项目机密的分支必须就地销毁：
+    git switch dev      切换到当前工作分支
+    git branch -d feature-vulcan  删除新功能分区。
+    但这时发现，这个命令执行不成功。
+    git友情提醒，该分支还没有被合并，如果删除，将丢失掉修改。
+    但如果确实不需要这个分支进行合并，那么就要进行强行删除，需要使用大写的-D参数
+    git branch -D feature-vulcan
+    这时，这个分支就被删除了。完全没有一丝痕迹
+
+#### Feature分支小结
+
+    开发一个新需求，最好新建一个分支；
+    如果要丢弃一个没有被合并过的分支，可以通过git branch -D <name>强行删除
