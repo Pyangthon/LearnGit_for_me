@@ -254,3 +254,29 @@
     可使用git log --graph --pretty=oneline --abbrev-commit 这个条命令
     查看分支的合并情况。
 
+## 分支管理策略
+
+    通常合并分支时，如果可能Git会用Fast forward模式，但这种模式下，删除分支后会丢失分支信息。
+    如果要强制禁用Fast forward模式， Git就会在merge时生产一个新的commit，这样分支历史上就可以看出分支信息。
+    如何实现这种方法的分支管理策略呢
+    * 1 创建并去换dev分支
+    git switch -c dev
+    * 2 修改或新建文件，并将其添加和提交
+    git add readme.md
+    git commit -m "add merge"
+    * 3 切换分支到master
+    git switch master
+    * 4 准备合并dev分支，并使用--no--ff参数，表示禁用fast forward
+    git merge --no--ff -m "merge wtih no-ff" dev
+    本次合并要创建一个新的commit，所以加上-m的参数，把commit描述写进去。
+
+### 分支策略
+
+    在实际的开发过程中，应该按照几个基本原则进行分支管理：
+    首先,master分支应该是非常稳定的，也就是仅用来发布新版本，平时不能再上面干活；
+    编写新功能代码都在dev分支上，当某一个功能稳定完全后，即可将dev分支和并到master上，然后master中发布新版本
+
+### 分支策略小结
+
+    Git分支相当强大。
+    合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做个合并
