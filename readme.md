@@ -4,4 +4,8 @@ Creating a new breanch is quick.
 Creating a new branch is quick AND simple
 Switchec to a new branch "dev".
 
+<<<<<<< Updated upstream
 Git is a free software.
+=======
+Git is a free software.
+>>>>>>> Stashed changes
