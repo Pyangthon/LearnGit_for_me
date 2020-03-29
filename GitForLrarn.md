@@ -178,4 +178,16 @@ GitHub只要知道了公钥，就可以确定只有自己才能进行推送。
   ## 分支删除
     当确保需要删除的分支中的内容已不再需要或已经合并完成后，即可进行删除
     git branch -d <name> 删除分支
-
+  ## switch
+  在切换分支时使用git checkout <branch>，这个命令与撤销修改是同一个命令，实际上这并不和是，所以雀环分支这个动作使用switch更加科学。所以后面的分支切换内容都将使用switch来进行。
+  创建新的分支dev
+  git switch -c dev 
+  切换到主分支
+  git switch master
+  ## 分支管理小结
+    查看分支: git branch
+    创建分支: git branch <name>
+    切换分支: git checkout <name>或者 git switch <name>
+    创建+雀环分支: git checkout -b <name> 或者 git switch -c <name>
+    合并某分支到当前分支; git merge <name>
+    删除分支: git branch -d <name>
