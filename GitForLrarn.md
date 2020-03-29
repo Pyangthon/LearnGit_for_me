@@ -148,4 +148,13 @@ GitHub只要知道了公钥，就可以确定只有自己才能进行推送。
   完成克隆
 # 如何删除远端仓库
   详情查阅https://blog.csdn.net/weixin_39068791/article/details/80556278
+# 解决上传失败问题(SSH不能连接成功)
+  使用 git push origin master 出错
+  报错为
+  ssh: connect to host github.com port 22: Connection timed out
+  fatal: Could not read from remote repository.
+
+  Please make sure you have the correct access rights
+  and the repository exists.
+  解决措施查阅 https://blog.csdn.net/qq_42146613/article/details/82772734
 
