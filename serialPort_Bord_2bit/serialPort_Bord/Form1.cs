@@ -18,12 +18,16 @@ namespace serialPort_Bord
             public bool CurrentTestDet;         // 电流测试指令(判断当前接收的内容是否为电流值)
         }
 
-        const byte ConfigTableNum = 0XFB;     // 配置表号
-        const byte ConfigIPAndPort = 0XFA;     // 配置IP和端口
-        const byte GetIPAndPortDet = 0XFC;     // 获取IP和端口
-        const byte ReturnSuccess = 0XFF;     // 返回成功
-        const byte FrameTail = 0X16;     // 帧尾
-        const byte HeadWareDet = 0XFD;     // 测试硬件(按键和阀门)
+        const byte ConfigTableNum = 0XFB;       // 配置表号
+        const byte ConfigIPAndPort = 0XFA;      // 配置IP和端口
+        const byte GetIPAndPortDet = 0XFC;      // 获取IP和端口
+        const byte ReturnSuccess = 0XFF;        // 返回成功
+        const byte FrameTail = 0X16;            // 帧尾
+        const byte HeadWareDet = 0XFD;          // 测试硬件(按键和阀门)
+        const byte DetPos = 0X0A;               // 指令位置
+        const byte FBackPos = 0X0B;             // 返回指令状态位置
+        const byte FixedLength = 0X0E;          // 固定数据长度位数
+        const byte DataStartPos = 0X0B;
 
 
 
@@ -115,9 +119,8 @@ namespace serialPort_Bord
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show(Convert.ToString(ex));
                 MessageBox.Show("表端配置不正确，请检查表端是否为配置模式", "ERROR");
             }
         }
@@ -140,9 +143,9 @@ namespace serialPort_Bord
                 }
                 else
                 {
-                    if (ReceBuffer[9] == ConfigTableNum)      // 修改表号
+                    if (ReceBuffer[DetPos] == ConfigTableNum)      // 修改表号
                     {
-                        if (ReceBuffer[10] == ReturnSuccess) // 解析指令结果
+                        if (ReceBuffer[FBackPos] == ReturnSuccess) // 解析指令结果
                         {
                             byte TableLen = 0;
                             if (TableNumBitLength % 2 == 0)
@@ -166,9 +169,9 @@ namespace serialPort_Bord
                             TableNum_PictureBox.Image = Resources.Error;
                         }
                     }
-                    else if (ReceBuffer[9] == ConfigIPAndPort) // 修改IP和端口号
+                    else if (ReceBuffer[DetPos] == ConfigIPAndPort) // 修改IP和端口号
                     {
-                        if (ReceBuffer[10] == ReturnSuccess) // 解析指令结果
+                        if (ReceBuffer[FBackPos] == ReturnSuccess) // 解析指令结果
                         {
                             Dis_Rece_TextBox.AppendText("IP和端口号修改成功\r\n");
                             IP_Port_PictureBox.Image = Resources.Acces;
@@ -179,12 +182,12 @@ namespace serialPort_Bord
                             IP_Port_PictureBox.Image = Resources.Error;
                         }
                     }
-                    else if (ReceBuffer[9] == GetIPAndPortDet) // 获取IP地址和端口号
+                    else if (ReceBuffer[DetPos] == GetIPAndPortDet) // 获取IP地址和端口号
                     {
                         GetIPAndPort(ReceBuffer);
                         GetIP_PictureBox.Image = Resources.Acces;
                     }
-                    else if (ReceBuffer[9] == HeadWareDet)  // 校验按键和阀门
+                    else if (ReceBuffer[DetPos] == HeadWareDet)  // 校验按键和阀门
                     {
                         //
                     }
@@ -213,9 +216,9 @@ namespace serialPort_Bord
             byte[] MainIP = new byte[4];            // 主IP
             byte[] SubIP = new byte[4];             // 备用IP
             byte[] PortNumArr = new byte[2];        // 端口号
-            Array.Copy(Arr, 10, MainIP, 0, 4);      // 获取主IP
-            Array.Copy(Arr, 14, SubIP, 0, 4);       // 获取备用IP
-            Array.Copy(Arr, 18, PortNumArr, 0, 2);  // 获取端口号
+            Array.Copy(Arr, DetPos, MainIP, 0, 4);      // 获取主IP
+            Array.Copy(Arr, DetPos + 4, SubIP, 0, 4);       // 获取备用IP
+            Array.Copy(Arr, DetPos + 8, PortNumArr, 0, 2);  // 获取端口号
 
             Dis_Rece_TextBox.AppendText("主IP地址为   :");
             SerialPortHelper.PrintIP(MainIP, Dis_Rece_TextBox);      // 输出主IP地址
@@ -552,7 +555,7 @@ namespace serialPort_Bord
         /// <param name="Arr"></param>
         public void ConDefValve(byte[] Arr)
         {
-            byte[] tempArr = { 0X68, 0X00, 0XE1, 0XA1, 0XAA, 0XAA, 0XAA, 0XAA, 0XAA };
+            byte[] tempArr = { 0X68, 0X00, 0X00, 0XE1, 0XA1, 0XAA, 0XAA, 0XAA, 0XAA, 0XAA };
             for (int i = 0; i < tempArr.Length; i++)
             {
                 Arr[i] = tempArr[i];
@@ -575,10 +578,11 @@ namespace serialPort_Bord
                     return;
                 }
                 byte[] TableNumber = SerialPortHelper.Str2Bcd(TableNumber_TextBox.Text);    // 将字符串转成BCD码
-                byte[] ConfTabNum = new byte[13 + TableNumber.Length];  // 根据表号的长度定义数组的长度      
+                byte[] ConfTabNum = new byte[FixedLength + TableNumber.Length];  // 根据表号的长度定义数组的长度      
                 ConDefValve(ConfTabNum);        // 写入默认数据
-                ConfTabNum[9] = ConfigTableNum;           // 写入设置表号指令
-                Crc16.GetDataCrc16(TableNumber, ConfTabNum);             // 获取数据和CRC16校验
+                ConfTabNum[DetPos] = ConfigTableNum;           // 写入设置表号指令
+                Array.Copy(TableNumber, 0, ConfTabNum, DataStartPos, TableNumber.Length);
+                Crc16.GetCrc16(ConfTabNum);             // 获取数据和CRC16校验
                 Rece_HexCheckBox.Checked = true;    // 将接收16进制勾选框选上。
                 SerialPortHelper.SendHex(SerialPort_Entity, ConfTabNum); // 发送数据
             }
@@ -594,9 +598,9 @@ namespace serialPort_Bord
         /// <param name="e"></param>
         private void GetIP_Button_Click(object sender, EventArgs e)
         {
-            byte[] GetIp_Arr = new byte[13];
+            byte[] GetIp_Arr = new byte[FixedLength];
             ConDefValve(GetIp_Arr);
-            GetIp_Arr[9] = GetIPAndPortDet;
+            GetIp_Arr[DetPos] = GetIPAndPortDet;
             Crc16.GetCrc16(GetIp_Arr);
             Rece_HexCheckBox.Checked = true;
             SerialPortHelper.SendHex(SerialPort_Entity, GetIp_Arr);
@@ -638,7 +642,7 @@ namespace serialPort_Bord
         /// <param name="e"></param>
         private void IP_PORT_Confirm_Button_Click(object sender, EventArgs e)
         {                                                                                   //主IP0  IP1   IP2   IP3  副IP0  IP1   IP2   IP3  PORT_h PORT_l
-            byte[] IP_Port_Arr = { 0X68, 0X00, 0XE1, 0XA1, 0XAA, 0XAA, 0XAA, 0XAA, 0XAA, 0XFA, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x16 };
+            byte[] IP_Port_Arr = new byte[FixedLength + 10];
             string MainIpAddress = MainIPAddress_MaskedTextBox.Text;            // 获取主IP地址
             string SubIpAddrss = SubIPAddress_MaskedTextBox.Text;               // 获取副IP地址
 
@@ -649,17 +653,19 @@ namespace serialPort_Bord
             }
             else
             {
+                ConDefValve(IP_Port_Arr);
+                IP_Port_Arr[DetPos] = ConfigIPAndPort;
                 if (Crc16.Str_IsEmpty(MainIpAddress) != true)     // 判断主IP地址是否为空，为空则跳过
                 {
                     // 判断获取IP地址是否成功
-                    if (GetIPAddress(MainIpAddress, IP_Port_Arr, 10) == false)      // 判断该字符串内有没有类似于IP地址的内容，如果有则将其分为四个字节并放到输出数组中，
+                    if (GetIPAddress(MainIpAddress, IP_Port_Arr, DataStartPos) == false)      // 判断该字符串内有没有类似于IP地址的内容，如果有则将其分为四个字节并放到输出数组中，
                     {
                         return;
                     }
                 }
                 if (Crc16.Str_IsEmpty(SubIpAddrss) != true)
                 {
-                    if (GetIPAddress(SubIpAddrss, IP_Port_Arr, 14) == false)
+                    if (GetIPAddress(SubIpAddrss, IP_Port_Arr, DataStartPos + 4) == false)
                     {
                         return;
                     }
@@ -674,8 +680,8 @@ namespace serialPort_Bord
                     MessageBox.Show("端口号超出范围(0-65535)，请重新输入", "ERROR");     // 错误提示
                     return;
                 }
-                IP_Port_Arr[18] = Convert.ToByte(PortNum & 0xFF);
-                IP_Port_Arr[19] = Convert.ToByte(PortNum >> 8);
+                IP_Port_Arr[DataStartPos + 9] = Convert.ToByte(PortNum & 0xFF);
+                IP_Port_Arr[DataStartPos + 10] = Convert.ToByte(PortNum >> 8);
             }
             catch (Exception)
             {

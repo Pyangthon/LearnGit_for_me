@@ -92,10 +92,10 @@ namespace serialPort_Bord
         {
             try
             {
-                Encoding encoding = System.Text.Encoding.GetEncoding("GB2312");
-                byte[] bytes = encoding.GetBytes(textBox.Text);
-                serialPort.Write(bytes, 0, bytes.Length);
-                return SendData_Typedef.SendComp;
+                Encoding encoding = Encoding.GetEncoding("GB2312");     // 将文本框编码格式改为GB2312
+                byte[] bytes = encoding.GetBytes(textBox.Text);         // 将文本框中的内容以byte类型存放到数组中
+                serialPort.Write(bytes, 0, bytes.Length);               // 将数据发送出去
+                return SendData_Typedef.SendComp;                       // 返回发送成功
             }
             catch (Exception)
             {

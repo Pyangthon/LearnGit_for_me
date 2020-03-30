@@ -135,14 +135,16 @@ namespace serialPort_Bord
         /// CRC16_Check校验
         /// </summary>
         /// <param name="serArr"></param>原数组
+        /// <param name="ArrLen"></param> 数据长度
         /// <returns>校验是否成功 true 成功 false 失败</returns>
-        public bool CRC16_Check(byte[] serArr, int Len)
+        public bool CRC16_Check(byte[] serArr, int ArrLen)
         {
-            if (serArr[1] != Len)   // 判断数据长度是否正确
+            int byteArrLen = serArr[1] + serArr[2];
+            if (byteArrLen != ArrLen)   // 判断数据长度是否正确
             {
                 return false;       // 不正常则返回失败
             }
-            byte[] temp = new byte[serArr[1] - 3];              // 创建比原数组小三字节大小的byte数组
+            byte[] temp = new byte[byteArrLen - 3];              // 创建比原数组小三字节大小的byte数组
             Array.Copy(serArr, temp, temp.Length);              // 将原数组复制到新数组中准备用于校验
             ushort CrcValve = GetCRC16(temp, temp.Length);      // 获取校验结果
             byte[] Check_Arr = new byte[2];                     // 创建2字节byte数组用于存放校验位
@@ -151,7 +153,7 @@ namespace serialPort_Bord
 
             // 判断校验位是否相等
             byte[] srcCheck_Arr = new byte[2];
-            Array.Copy(serArr, Len - 3, srcCheck_Arr, 0, 2);
+            Array.Copy(serArr, ArrLen - 3, srcCheck_Arr, 0, 2);
             if (Arr_Equals(srcCheck_Arr, Check_Arr) != true)
             {
                 return false;
@@ -164,30 +166,16 @@ namespace serialPort_Bord
         /// <param name="disArr"></param> 原数组
         public void GetCrc16(byte[] disArr)
         {
-            disArr[1] = Convert.ToByte(disArr.Length);
-            byte[] temp = new byte[disArr[1] - 3];
-            Array.Copy(disArr, temp, disArr[1] - 3);
-            ushort CrcValve = GetCRC16(temp, temp.Length);
-            disArr[disArr.Length - 2] = Convert.ToByte(CrcValve >> 8);
-            disArr[disArr.Length - 3] = Convert.ToByte(CrcValve & 0xff);
-            disArr[disArr.Length - 1] = 0x16;
-        }
-
-        /// <summary>
-        /// 将数据位和校验位存放到发送数组中
-        /// </summary>
-        /// <param name="srcArr"></param>
-        /// <param name="disArr"></param>
-        public void GetDataCrc16(byte[] srcArr, byte[] disArr)
-        {
-            int crcLen = srcArr.Length + 10;
-            Array.Copy(srcArr, 0, disArr, 10, srcArr.Length);       // 先将原数组放到目标数组，此处的原数组表示的表号
-            disArr[1] = Convert.ToByte(disArr.Length);              // 将数组长度放在目标数组的第1位
-            ushort CrcValve = GetCRC16(disArr, crcLen);             // 获取CRC16校验值
+            disArr[1] = Convert.ToByte(disArr.Length >> 8);     // 获取帧长度的高8位
+            disArr[2] = Convert.ToByte(disArr.Length & 0XFF);   // 获取帧长度的低8位
+            byte[] temp = new byte[disArr.Length - 3];          // 实例化一个比原数组少3个元素的临时数组，用于校验数据
+            Array.Copy(disArr, temp, disArr.Length- 3);         // 将原数组需要校验的数据拷贝到临时数组中
+            ushort CrcValve = GetCRC16(temp, temp.Length);      // 计算CRC16校验
             disArr[disArr.Length - 3] = Convert.ToByte(CrcValve & 0xff);    // 存放CRC16校验高位
             disArr[disArr.Length - 2] = Convert.ToByte(CrcValve >> 8);      // 存放CRC16校验低位
-            disArr[disArr.Length - 1] = 0x16;                       // 存放最后一位数组
+            disArr[disArr.Length - 1] = 0x16;                   // 存放帧尾
         }
+
         /// <summary>
         /// 判断数组内容是否一致
         /// </summary>
@@ -235,7 +223,7 @@ namespace serialPort_Bord
         {
             try
             {
-                string doublNumber = Regex.Replace(str, @"[^0-9,.]+", "");  // 正则表达式寻找
+                string doublNumber = Regex.Replace(str, @"[^0-9,.]+", "");  // 正则表达式寻找带小数的数字
                 return Convert.ToDouble(doublNumber);       // 转换为双精度浮点数
             }
             catch (Exception)
