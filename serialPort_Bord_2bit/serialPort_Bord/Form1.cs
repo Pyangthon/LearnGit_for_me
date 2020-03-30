@@ -27,7 +27,7 @@ namespace serialPort_Bord
 
 
 
-        CurrentTestRangeTypeDef CurrentTestStruct;  // 实例化电流测试结构体
+        CurrentTestRangeTypeDef CurrentTestStruct;       // 实例化电流测试结构体
         readonly CRC16 Crc16 = new CRC16();              // 实例化Cre16校验类
         readonly SerialPortHelper SerialPortHelper = new SerialPortHelper();
         byte TableNumBitLength = 0;
@@ -211,7 +211,7 @@ namespace serialPort_Bord
         public void GetIPAndPort(byte[] Arr)
         {
             byte[] MainIP = new byte[4];            // 主IP
-            byte[] SubIP = new byte[4];            // 备用IP
+            byte[] SubIP = new byte[4];             // 备用IP
             byte[] PortNumArr = new byte[2];        // 端口号
             Array.Copy(Arr, 10, MainIP, 0, 4);      // 获取主IP
             Array.Copy(Arr, 14, SubIP, 0, 4);       // 获取备用IP
